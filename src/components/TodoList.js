@@ -29,13 +29,14 @@ class TodoList extends Component {
 
   render() {
     const { todoList, toggleTodoCompleted, deleteTodo } = this.props;
+    const nonCompletedTodoList = todoList.filter(todo => !todo.completed);
     const completedTodoList = todoList.filter(todo => todo.completed);
     const numCompleted = completedTodoList.length;
     return (
       <div>
         <List>
           <ListItem button onClick={this.handleCompletedClick}>
-            <Avatar>{numCompleted}</Avatar>
+            <Avatar>{numCompleted.toString()}</Avatar>
             <ListItemText
               primary="Completed"
               primaryTypographyProps={{ variant: "headline" }}
@@ -59,7 +60,7 @@ class TodoList extends Component {
         </List>
         <Divider />
         <List>
-          {todoList.filter(todo => !todo.completed).map(todo => {
+          {nonCompletedTodoList.map(todo => {
             return (
               <TodoListItem
                 key={todo.id}
