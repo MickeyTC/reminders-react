@@ -22,7 +22,7 @@ const TodoListItem = ({ todo, onToggleCompleted, onDeleteTodo }) => {
         secondary={todo.date && moment(todo.date).fromNow()}
       />
       <ListItemSecondaryAction>
-        <IconButton onClick={() => onDeleteTodo(todo.id)}>
+        <IconButton color="secondary" onClick={() => onDeleteTodo(todo.id)}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>

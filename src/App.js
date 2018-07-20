@@ -3,6 +3,9 @@ import logo from "./logo.svg";
 import "./App.css";
 
 import TodoList from "./components/TodoList";
+import TodoAdd from "./components/TodoAdd";
+
+import uniqid from 'uniqid';
 
 class App extends Component {
   constructor(props) {
@@ -27,6 +30,7 @@ class App extends Component {
     };
     this.toggleTodoCompleted = this.toggleTodoCompleted.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
+    this.addTodo = this.addTodo.bind(this);
   }
 
   toggleTodoCompleted(id) {
@@ -48,6 +52,20 @@ class App extends Component {
     });
   }
 
+  addTodo(title) {
+    this.setState(prevState => {
+      const newTodoList = prevState.todoList.map(todo => ({ ...todo }));
+      newTodoList.push({
+        id: uniqid(),
+        title: title,
+        description: "",
+        date: null,
+        completed: false
+      });
+      return { todoList: newTodoList };
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -55,6 +73,9 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
+        <TodoAdd
+          addTodo={this.addTodo}
+        />
         <TodoList
           todoList={this.state.todoList}
           toggleTodoCompleted={this.toggleTodoCompleted}
