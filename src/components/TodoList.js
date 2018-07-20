@@ -25,6 +25,7 @@ class TodoList extends Component {
       ]
     };
     this.toggleTodoCompleted = this.toggleTodoCompleted.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
   }
 
   toggleTodoCompleted(id) {
@@ -33,6 +34,15 @@ class TodoList extends Component {
       const newTodo = newTodoList.find(todo => todo.id === id);
       if (newTodo === undefined) return;
       newTodo.completed = !newTodo.completed;
+      return { todoList: newTodoList };
+    });
+  }
+
+  deleteTodo(id) {
+    this.setState(prevState => {
+      const newTodoList = prevState.todoList
+        .map(todo => ({ ...todo }))
+        .filter(todo => todo.id !== id);
       return { todoList: newTodoList };
     });
   }
@@ -46,6 +56,7 @@ class TodoList extends Component {
               key={todo.id}
               todo={todo}
               onToggleCompleted={this.toggleTodoCompleted}
+              onDeleteTodo={this.deleteTodo}
             />
           );
         })}
