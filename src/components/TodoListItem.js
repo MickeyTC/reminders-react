@@ -11,7 +11,7 @@ import moment from "moment";
 
 const TodoListItem = ({ todo, onToggleCompleted, onDeleteTodo }) => {
   return (
-    <ListItem button divider>
+    <ListItem button>
       <Checkbox
         checked={todo.completed}
         disableRipple
