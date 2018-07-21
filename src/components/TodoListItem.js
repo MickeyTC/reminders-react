@@ -47,6 +47,9 @@ class TodoListItem extends Component {
           />
           <ListItemText
             primary={todo.title}
+            primaryTypographyProps={
+              todo.completed ? { color: "textSecondary" } : {}
+            }
             secondary={
               todo.date && moment(todo.date, "YYYY-MM-DD HH:mm Z").fromNow()
             }

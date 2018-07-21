@@ -3,40 +3,45 @@ import logo from "./logo.svg";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import TodoAdd from "./components/TodoAdd";
-import moment from "moment";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoList: [
-        {
-          id: "asd",
-          title: "asdas",
-          description: "asdww",
-          date: moment([2018, 6, 25]).format("YYYY-MM-DD HH:mm Z"),
-          completed: false
-        },
-        {
-          id: "asd2",
-          title: "asdas2",
-          description: "asdww2",
-          date: moment([2018, 6]).format("YYYY-MM-DD HH:mm Z"),
-          completed: true
-        },
-        {
-          id: "12345",
-          title: "Time",
-          description: "asdww2",
-          date: "",
-          completed: false
-        }
-      ]
+      todoList: []
     };
+    this.readLocalStorage = this.readLocalStorage.bind(this);
+    this.writeLocalStorage = this.writeLocalStorage.bind(this);
     this.toggleTodoCompleted = this.toggleTodoCompleted.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
     this.addTodo = this.addTodo.bind(this);
     this.updateTodo = this.updateTodo.bind(this);
+  }
+
+  readLocalStorage() {
+    for (let key in this.state) {
+      if (localStorage.hasOwnProperty(key)) {
+        let value = localStorage.getItem(key);
+        value = JSON.parse(value);
+        this.setState({ [key]: value });
+      }
+    }
+  }
+
+  writeLocalStorage() {
+    for (let key in this.state) {
+      localStorage.setItem(key, JSON.stringify(this.state[key]));
+    }
+  }
+
+  componentDidMount() {
+    this.readLocalStorage();
+    window.addEventListener("beforeunload", this.writeLocalStorage);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.writeLocalStorage);
+    this.writeLocalStorage();
   }
 
   toggleTodoCompleted(id) {

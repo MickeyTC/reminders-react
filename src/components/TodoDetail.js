@@ -35,7 +35,7 @@ class TodoDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todo: props.todo
+      todo: { ...props.todo }
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -43,7 +43,7 @@ class TodoDetail extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({ todo: newProps.todo });
+    this.setState({ todo: { ...newProps.todo } });
   }
 
   handleChangeText(event) {
@@ -143,6 +143,7 @@ class TodoDetail extends Component {
             fullWidth
             value={todo.title}
             onChange={this.handleChangeText}
+            autoFocus
           />
           <TextField
             name="description"
