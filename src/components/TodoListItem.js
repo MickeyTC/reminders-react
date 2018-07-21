@@ -13,6 +13,7 @@ import TodoDetail from "./TodoDetail";
 
 class TodoListItem extends Component {
   constructor(props) {
+    // const { todo, onToggleCompleted, onDeleteTodo, onUpdateTodo } = this.props;
     super(props);
     this.state = {
       openDetail: false
@@ -39,28 +40,30 @@ class TodoListItem extends Component {
     const { todo, onToggleCompleted, onDeleteTodo } = this.props;
     return (
       <Fragment>
-      <ListItem button onClick={this.handleClickOpenDetail}>
-        <Checkbox
-          checked={todo.completed}
-          disableRipple
-          onChange={() => onToggleCompleted(todo.id)}
+        <ListItem button onClick={this.handleClickOpenDetail}>
+          <Checkbox
+            checked={todo.completed}
+            disableRipple
+            onChange={() => onToggleCompleted(todo.id)}
+          />
+          <ListItemText
+            primary={todo.title}
+            secondary={
+              todo.date && moment(todo.date, "YYYY-MM-DD HH:mm Z").fromNow()
+            }
+          />
+          <ListItemSecondaryAction>
+            <IconButton color="secondary" onClick={() => onDeleteTodo(todo.id)}>
+              <DeleteIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <TodoDetail
+          todo={todo}
+          open={this.state.openDetail}
+          onCancel={this.handleCancel}
+          onSave={this.handleSave}
         />
-        <ListItemText
-          primary={todo.title}
-          secondary={todo.date && moment(todo.date,"YYYY-MM-DD HH:mm Z").fromNow()}
-        />
-        <ListItemSecondaryAction>
-          <IconButton color="secondary" onClick={() => onDeleteTodo(todo.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-      <TodoDetail
-        todo={todo}
-        open={this.state.openDetail}
-        onCancel={this.handleCancel}
-        onSave={this.handleSave}
-      />
       </Fragment>
     );
   }

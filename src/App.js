@@ -87,7 +87,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Reminders React</h1>
         </header>
-        <TodoAdd addTodo={this.addTodo} />
+        <TodoAdd onAddTodo={this.addTodo} />
         <TodoList
           todoList={this.state.todoList}
           onToggleCompleted={this.toggleTodoCompleted}

@@ -6,6 +6,7 @@ import uniqid from "uniqid";
 
 class TodoAdd extends Component {
   constructor(props) {
+    // const { onAddTodo } = props;
     super(props);
     this.state = {
       todoTitle: ""
@@ -21,7 +22,7 @@ class TodoAdd extends Component {
   handleSubmit(event) {
     const title = this.state.todoTitle;
     if (title !== "") {
-      this.props.addTodo({
+      this.props.onAddTodo({
         id: uniqid(),
         title: title,
         description: "",

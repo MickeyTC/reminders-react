@@ -20,6 +20,7 @@ const styles = {
 };
 class TodoList extends Component {
   constructor(props) {
+    // const { todoList, onToggleCompleted, onDeleteTodo, onUpdateTodo } = this.props;
     super(props);
     this.state = {
       completedExpand: false

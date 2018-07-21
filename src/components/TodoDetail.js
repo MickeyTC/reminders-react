@@ -12,6 +12,7 @@ import moment from "moment";
 
 class TodoDetail extends Component {
   constructor(props) {
+    // const { todo, open, onCancel, onSave } = props;
     super(props);
     this.state = {
       todo: {
@@ -153,7 +154,7 @@ class TodoDetail extends Component {
             }
             onChange={this.handleChangeDate}
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
           />
           <TextField
@@ -167,7 +168,7 @@ class TodoDetail extends Component {
             }
             onChange={this.handleChangeTime}
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
           />
         </DialogContent>
