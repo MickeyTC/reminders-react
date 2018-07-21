@@ -7,13 +7,12 @@ import {
   IconButton
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import PropTypes from "prop-types";
 import moment from "moment";
-
 import TodoDetail from "./TodoDetail";
 
 class TodoListItem extends Component {
   constructor(props) {
-    // const { todo, onToggleCompleted, onDeleteTodo, onUpdateTodo } = this.props;
     super(props);
     this.state = {
       openDetail: false
@@ -68,5 +67,18 @@ class TodoListItem extends Component {
     );
   }
 }
+
+TodoListItem.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    completed: PropTypes.bool
+  }),
+  onToggleCompleted: PropTypes.func,
+  onDeleteTodo: PropTypes.func,
+  onUpdateTodo: PropTypes.func
+};
 
 export default TodoListItem;

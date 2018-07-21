@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-
 import TodoList from "./components/TodoList";
 import TodoAdd from "./components/TodoAdd";
-
 import moment from "moment";
 
 class App extends Component {

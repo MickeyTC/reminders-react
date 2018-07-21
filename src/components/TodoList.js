@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-
+import PropTypes from "prop-types";
 import TodoListItem from "./TodoListItem";
 
 const styles = {
@@ -20,7 +20,6 @@ const styles = {
 };
 class TodoList extends Component {
   constructor(props) {
-    // const { todoList, onToggleCompleted, onDeleteTodo, onUpdateTodo } = this.props;
     super(props);
     this.state = {
       completedExpand: false
@@ -84,5 +83,20 @@ class TodoList extends Component {
     );
   }
 }
+
+TodoList.propTypes = {
+  todoList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      date: PropTypes.string,
+      completed: PropTypes.bool
+    })
+  ).isRequired,
+  onToggleCompleted: PropTypes.func,
+  onDeleteTodo: PropTypes.func,
+  onUpdateTodo: PropTypes.func
+};
 
 export default withStyles(styles)(TodoList);

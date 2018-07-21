@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-
-import uniqid from "uniqid";
-
+import PropTypes from "prop-types";
 import TodoDetail from "./TodoDetail";
+import uniqid from "uniqid";
 
 class TodoAdd extends Component {
   constructor(props) {
-    // const { onAddTodo } = props;
     super(props);
     this.state = {
       openAddTodo: false,
@@ -63,5 +61,9 @@ class TodoAdd extends Component {
     );
   }
 }
+
+TodoAdd.propTypes = {
+  onAddTodo: PropTypes.func
+};
 
 export default TodoAdd;

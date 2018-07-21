@@ -7,12 +7,12 @@ import {
   Button,
   TextField
 } from "@material-ui/core";
-
+import SaveIcon from "@material-ui/icons/Save";
+import PropTypes from "prop-types";
 import moment from "moment";
 
 class TodoDetail extends Component {
   constructor(props) {
-    // const { todo, open, onCancel, onSave } = props;
     super(props);
     this.state = {
       todo: props.todo
@@ -138,6 +138,7 @@ class TodoDetail extends Component {
             name="date"
             type="date"
             label="Due Date"
+            margin="dense"
             value={
               todo.date === ""
                 ? ""
@@ -152,6 +153,7 @@ class TodoDetail extends Component {
             name="time"
             type="time"
             label="Time"
+            margin="dense"
             value={
               todo.date === ""
                 ? ""
@@ -164,13 +166,32 @@ class TodoDetail extends Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={() => onSave(this.state.todo)}>
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            onClick={() => onSave(this.state.todo)}
+          >
             Save
+            <SaveIcon />
           </Button>
         </DialogActions>
       </Dialog>
     );
   }
 }
+
+TodoDetail.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    completed: PropTypes.bool
+  }),
+  open: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func,
+  onSave: PropTypes.func
+};
 
 export default TodoDetail;
