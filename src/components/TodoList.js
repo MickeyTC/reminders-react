@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   List,
   Collapse,
@@ -35,7 +35,13 @@ class TodoList extends Component {
   }
 
   render() {
-    const { classes, todoList, onToggleCompleted, onDeleteTodo, onUpdateTodo } = this.props;
+    const {
+      classes,
+      todoList,
+      onToggleCompleted,
+      onDeleteTodo,
+      onUpdateTodo
+    } = this.props;
     const nonCompletedTodoList = todoList.filter(todo => !todo.completed);
     const completedTodoList = todoList.filter(todo => todo.completed);
     const numCompleted = completedTodoList.length;
@@ -53,7 +59,7 @@ class TodoList extends Component {
       });
     };
     return (
-      <div>
+      <Fragment>
         <Paper className={classes.todoPaper}>
           <List disablePadding>
             <ListItem button onClick={this.handleCompletedClick}>
@@ -74,7 +80,7 @@ class TodoList extends Component {
             <List disablePadding>{listItem(nonCompletedTodoList)}</List>
           </Paper>
         )}
-      </div>
+      </Fragment>
     );
   }
 }

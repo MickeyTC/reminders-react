@@ -1,48 +1,65 @@
-import React, { Component } from "react";
-import { Input, Button } from "@material-ui/core";
+import React, { Component, Fragment } from "react";
+import { Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
 import uniqid from "uniqid";
+
+import TodoDetail from "./TodoDetail";
 
 class TodoAdd extends Component {
   constructor(props) {
     // const { onAddTodo } = props;
     super(props);
     this.state = {
-      todoTitle: ""
+      openAddTodo: false,
+      todoID: uniqid()
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClickAdd = this.handleClickAdd.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ todoTitle: event.target.value });
+  handleClickAdd() {
+    this.setState({ openAddTodo: true });
   }
 
-  handleSubmit(event) {
-    const title = this.state.todoTitle;
-    if (title !== "") {
-      this.props.onAddTodo({
-        id: uniqid(),
-        title: title,
-        description: "",
-        date: "",
-        completed: false
-      });
-      this.setState({ todoTitle: "" });
-    }
-    event.preventDefault();
+  handleCancel() {
+    console.log("cancel", this.state.todoID);
+    this.setState({ openAddTodo: false });
+  }
+
+  handleSave(todo) {
+    console.log("save", this.state.todoID, todo);
+    this.setState({ openAddTodo: false, todoID: uniqid() });
+    this.props.onAddTodo(todo);
   }
 
   render() {
+    const todo = {
+      id: this.state.todoID,
+      title: "",
+      description: "",
+      date: "",
+      completed: false
+    };
     return (
-      <form onSubmit={this.handleSubmit}>
-        <Input value={this.state.todoTitle} onChange={this.handleChange} />
-        <Button type="submit" variant="extendedFab" color="primary">
+      <Fragment>
+        <Button
+          onClick={this.handleClickAdd}
+          type="submit"
+          variant="extendedFab"
+          color="primary"
+        >
           <AddIcon />
           Add
         </Button>
-      </form>
+        <TodoDetail
+          todo={todo}
+          open={this.state.openAddTodo}
+          onCancel={this.handleCancel}
+          onSave={this.handleSave}
+        />
+      </Fragment>
     );
   }
 }

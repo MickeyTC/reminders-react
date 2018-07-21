@@ -15,21 +15,22 @@ class TodoDetail extends Component {
     // const { todo, open, onCancel, onSave } = props;
     super(props);
     this.state = {
-      todo: {
-        ...props.todo
-      }
+      todo: props.todo
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
     this.handleChangeTime = this.handleChangeTime.bind(this);
-    this.onCancel = this.onCancel.bind(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({ todo: newProps.todo });
   }
 
   handleChangeText(event) {
     const target = event.target;
     const value = target.value;
     const name = event.target.name;
-    console.log(name, value);
+    // console.log(name, value);
     this.setState(prevState => {
       return {
         todo: {
@@ -43,7 +44,7 @@ class TodoDetail extends Component {
   handleChangeDate(event) {
     const target = event.target;
     const value = target.value;
-    console.log("Date", value, value.length);
+    // console.log("Date", value, value.length);
     if (value === "") {
       this.setState(prevState => ({
         todo: {
@@ -61,7 +62,7 @@ class TodoDetail extends Component {
             minute: prevMoment.minute()
           });
         }
-        console.log(newMoment.toString());
+        // console.log(newMoment.toString());
         return {
           todo: {
             ...prevState.todo,
@@ -75,7 +76,7 @@ class TodoDetail extends Component {
   handleChangeTime(event) {
     const target = event.target;
     const value = target.value;
-    console.log("Time", value, value.length);
+    // console.log("Time", value, value.length);
     this.setState(prevState => {
       const newMoment = value
         ? moment(value, "HH:mm")
@@ -88,7 +89,7 @@ class TodoDetail extends Component {
           date: prevMoment.date()
         });
       }
-      console.log(newMoment.toString());
+      // console.log(newMoment.toString());
       if (!newMoment.isValid()) return;
       return {
         todo: {
@@ -99,21 +100,11 @@ class TodoDetail extends Component {
     });
   }
 
-  onCancel() {
-    this.props.onCancel();
-    const todo = this.props.todo;
-    this.setState({
-      todo: {
-        ...todo
-      }
-    });
-  }
-
   render() {
-    const { open, onSave } = this.props;
+    const { open, onCancel, onSave } = this.props;
     const todo = this.state.todo;
     return (
-      <Dialog open={open} onClose={() => this.onCancel()}>
+      <Dialog open={open} onClose={() => onCancel()}>
         <DialogTitle>Reminder</DialogTitle>
         <DialogContent>
           <TextField
