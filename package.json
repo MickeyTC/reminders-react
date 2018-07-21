@@ -2,7 +2,7 @@
   "name": "reminders-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mickeytc.github.io/reminders/",
+  "homepage": "https://mickeytc.github.io/reminders-react/",
   "dependencies": {
     "@material-ui/core": "^1.4.0",
     "@material-ui/icons": "^1.1.0",
