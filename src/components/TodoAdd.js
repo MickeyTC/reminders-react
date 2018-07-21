@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Input, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
+import uniqid from "uniqid";
+
 class TodoAdd extends Component {
   constructor(props) {
     super(props);
@@ -18,8 +20,14 @@ class TodoAdd extends Component {
 
   handleSubmit(event) {
     const title = this.state.todoTitle;
-    if(title !== "") {
-      this.props.addTodo(title);
+    if (title !== "") {
+      this.props.addTodo({
+        id: uniqid(),
+        title: title,
+        description: "",
+        date: "",
+        completed: false
+      });
       this.setState({ todoTitle: "" });
     }
     event.preventDefault();

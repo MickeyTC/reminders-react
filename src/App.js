@@ -5,7 +5,7 @@ import "./App.css";
 import TodoList from "./components/TodoList";
 import TodoAdd from "./components/TodoAdd";
 
-import uniqid from 'uniqid';
+import moment from "moment";
 
 class App extends Component {
   constructor(props) {
@@ -16,29 +16,37 @@ class App extends Component {
           id: "asd",
           title: "asdas",
           description: "asdww",
-          date: new Date(2018, 11, 1),
+          date: moment([2018, 6, 25]).format("YYYY-MM-DD HH:mm Z"),
           completed: false
         },
         {
           id: "asd2",
           title: "asdas2",
           description: "asdww2",
-          date: null,
+          date: moment([2018, 6]).format("YYYY-MM-DD HH:mm Z"),
           completed: true
+        },
+        {
+          id: "12345",
+          title: "Time",
+          description: "asdww2",
+          date: "",
+          completed: false
         }
       ]
     };
     this.toggleTodoCompleted = this.toggleTodoCompleted.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
     this.addTodo = this.addTodo.bind(this);
+    this.updateTodo = this.updateTodo.bind(this);
   }
 
   toggleTodoCompleted(id) {
     this.setState(prevState => {
       const newTodoList = prevState.todoList.map(todo => ({ ...todo }));
-      const newTodo = newTodoList.find(todo => todo.id === id);
-      if (newTodo === undefined) return;
-      newTodo.completed = !newTodo.completed;
+      const foundTodo = newTodoList.find(todo => todo.id === id);
+      if (foundTodo === undefined) return;
+      foundTodo.completed = !foundTodo.completed;
       return { todoList: newTodoList };
     });
   }
@@ -52,16 +60,22 @@ class App extends Component {
     });
   }
 
-  addTodo(title) {
+  addTodo(newTodo) {
     this.setState(prevState => {
       const newTodoList = prevState.todoList.map(todo => ({ ...todo }));
-      newTodoList.push({
-        id: uniqid(),
-        title: title,
-        description: "",
-        date: null,
-        completed: false
-      });
+      newTodoList.push(newTodo);
+      return { todoList: newTodoList };
+    });
+  }
+
+  updateTodo(newTodo) {
+    this.setState(prevState => {
+      const newTodoList = prevState.todoList.map(todo => ({ ...todo }));
+      const idxfoundTodo = newTodoList.findIndex(
+        todo => todo.id === newTodo.id
+      );
+      if (idxfoundTodo === -1) return;
+      newTodoList.splice(idxfoundTodo, 1, newTodo);
       return { todoList: newTodoList };
     });
   }
@@ -71,15 +85,14 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Reminders React</h1>
         </header>
-        <TodoAdd
-          addTodo={this.addTodo}
-        />
+        <TodoAdd addTodo={this.addTodo} />
         <TodoList
           todoList={this.state.todoList}
-          toggleTodoCompleted={this.toggleTodoCompleted}
-          deleteTodo={this.deleteTodo}
+          onToggleCompleted={this.toggleTodoCompleted}
+          onDeleteTodo={this.deleteTodo}
+          onUpdateTodo={this.updateTodo}
         />
       </div>
     );
