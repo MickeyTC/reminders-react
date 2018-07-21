@@ -60,6 +60,7 @@ class TodoListItem extends Component {
         <TodoDetail
           todo={todo}
           open={this.state.openDetail}
+          dialogTitle="Edit Reminder"
           onCancel={this.handleCancel}
           onSave={this.handleSave}
         />

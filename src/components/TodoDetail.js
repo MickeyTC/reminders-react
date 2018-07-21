@@ -5,11 +5,31 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  TextField
+  TextField,
+  withStyles
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import PropTypes from "prop-types";
 import moment from "moment";
+
+const styles = theme => ({
+  dialogAction: {
+    justifyContent: "center"
+  },
+  dueContainer: {
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  dateInput: {
+    flexGrow: 2
+  },
+  timeInput: {
+    flexGrow: 1
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit
+  }
+});
 
 class TodoDetail extends Component {
   constructor(props) {
@@ -101,11 +121,11 @@ class TodoDetail extends Component {
   }
 
   render() {
-    const { open, onCancel, onSave } = this.props;
+    const { classes, open, dialogTitle, onCancel, onSave } = this.props;
     const todo = this.state.todo;
     return (
       <Dialog open={open} onClose={() => onCancel()}>
-        <DialogTitle>Reminder</DialogTitle>
+        {dialogTitle && <DialogTitle>{dialogTitle}</DialogTitle>}
         <DialogContent>
           <TextField
             name="id"
@@ -134,38 +154,42 @@ class TodoDetail extends Component {
             value={todo.description}
             onChange={this.handleChangeText}
           />
-          <TextField
-            name="date"
-            type="date"
-            label="Due Date"
-            margin="dense"
-            value={
-              todo.date === ""
-                ? ""
-                : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("YYYY-MM-DD")
-            }
-            onChange={this.handleChangeDate}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-          <TextField
-            name="time"
-            type="time"
-            label="Time"
-            margin="dense"
-            value={
-              todo.date === ""
-                ? ""
-                : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("HH:mm")
-            }
-            onChange={this.handleChangeTime}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
+          <div className={classes.dueContainer}>
+            <TextField
+              name="date"
+              type="date"
+              label="Due Date"
+              className={classes.dateInput}
+              margin="dense"
+              value={
+                todo.date === ""
+                  ? ""
+                  : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("YYYY-MM-DD")
+              }
+              onChange={this.handleChangeDate}
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+            <TextField
+              name="time"
+              type="time"
+              label="Time"
+              className={classes.timeInput}
+              margin="dense"
+              value={
+                todo.date === ""
+                  ? ""
+                  : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("HH:mm")
+              }
+              onChange={this.handleChangeTime}
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+          </div>
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={classes.dialogAction}>
           <Button
             variant="contained"
             size="large"
@@ -173,7 +197,7 @@ class TodoDetail extends Component {
             onClick={() => onSave(this.state.todo)}
           >
             Save
-            <SaveIcon />
+            <SaveIcon className={classes.rightIcon} />
           </Button>
         </DialogActions>
       </Dialog>
@@ -190,8 +214,9 @@ TodoDetail.propTypes = {
     completed: PropTypes.bool
   }),
   open: PropTypes.bool.isRequired,
+  dialogTitle: PropTypes.string,
   onCancel: PropTypes.func,
   onSave: PropTypes.func
 };
 
-export default TodoDetail;
+export default withStyles(styles)(TodoDetail);

@@ -22,12 +22,12 @@ class TodoAdd extends Component {
   }
 
   handleCancel() {
-    console.log("cancel", this.state.todoID);
+    // console.log("cancel", this.state.todoID);
     this.setState({ openAddTodo: false });
   }
 
   handleSave(todo) {
-    console.log("save", this.state.todoID, todo);
+    // console.log("save", this.state.todoID, todo);
     this.setState({ openAddTodo: false, todoID: uniqid() });
     this.props.onAddTodo(todo);
   }
@@ -49,11 +49,12 @@ class TodoAdd extends Component {
           color="primary"
         >
           <AddIcon />
-          Add
+          Add Reminder
         </Button>
         <TodoDetail
           todo={todo}
           open={this.state.openAddTodo}
+          dialogTitle="Add Reminder"
           onCancel={this.handleCancel}
           onSave={this.handleSave}
         />

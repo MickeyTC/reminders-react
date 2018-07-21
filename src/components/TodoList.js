@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import {
   List,
   Collapse,
@@ -14,10 +14,19 @@ import PropTypes from "prop-types";
 import TodoListItem from "./TodoListItem";
 
 const styles = {
+  listContainer: {
+    maxWidth: "800px",
+    minWidth: "315px",
+    width: "100%"
+  },
   todoPaper: {
-    margin: "2em"
+    margin: "1.5em",
+  },
+  countAvatar: {
+    backgroundColor: "#008000"
   }
 };
+
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -58,11 +67,11 @@ class TodoList extends Component {
       });
     };
     return (
-      <Fragment>
-        <Paper className={classes.todoPaper}>
+      <div className={classes.listContainer}>
+        <Paper elevation={5} className={classes.todoPaper}>
           <List disablePadding>
             <ListItem button onClick={this.handleCompletedClick}>
-              <Avatar>{numCompleted.toString()}</Avatar>
+              <Avatar className={classes.countAvatar}>{numCompleted.toString()}</Avatar>
               <ListItemText
                 primary="Completed"
                 primaryTypographyProps={{ variant: "headline" }}
@@ -75,16 +84,17 @@ class TodoList extends Component {
           </List>
         </Paper>
         {nonCompletedTodoList.length > 0 && (
-          <Paper className={classes.todoPaper}>
+          <Paper elevation={5} className={classes.todoPaper}>
             <List disablePadding>{listItem(nonCompletedTodoList)}</List>
           </Paper>
         )}
-      </Fragment>
+      </div>
     );
   }
 }
 
 TodoList.propTypes = {
+  classes: PropTypes.object.isRequired,
   todoList: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
