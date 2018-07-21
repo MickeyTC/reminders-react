@@ -207,6 +207,7 @@ class TodoDetail extends Component {
 }
 
 TodoDetail.propTypes = {
+  classes: PropTypes.object.isRequired,
   todo: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string,
