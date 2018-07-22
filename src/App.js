@@ -107,7 +107,9 @@ class App extends Component {
           onDeleteTodo={this.deleteTodo}
           onUpdateTodo={this.updateTodo}
         />
-        <TodoAdd onAddTodo={this.addTodo} />
+        <div className="add-button">
+          <TodoAdd onAddTodo={this.addTodo} />
+        </div>
       </div>
     );
   }
