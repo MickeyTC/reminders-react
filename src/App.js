@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoList: []
+      todoList: [],
+      expandCompleted: true
     };
     this.readLocalStorage = this.readLocalStorage.bind(this);
     this.writeLocalStorage = this.writeLocalStorage.bind(this);
@@ -16,6 +17,7 @@ class App extends Component {
     this.deleteTodo = this.deleteTodo.bind(this);
     this.addTodo = this.addTodo.bind(this);
     this.updateTodo = this.updateTodo.bind(this);
+    this.handleCompletedClick = this.handleCompletedClick.bind(this);
   }
 
   readLocalStorage() {
@@ -34,7 +36,7 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.readLocalStorage();
     // window.addEventListener("beforeunload", this.writeLocalStorage);
   }
@@ -51,7 +53,7 @@ class App extends Component {
       if (foundTodo === undefined) return;
       foundTodo.completed = !foundTodo.completed;
       return { todoList: newTodoList };
-    },this.writeLocalStorage);
+    }, this.writeLocalStorage);
   }
 
   deleteTodo(id) {
@@ -60,7 +62,7 @@ class App extends Component {
         .map(todo => ({ ...todo }))
         .filter(todo => todo.id !== id);
       return { todoList: newTodoList };
-    },this.writeLocalStorage);
+    }, this.writeLocalStorage);
   }
 
   addTodo(newTodo) {
@@ -68,7 +70,7 @@ class App extends Component {
       const newTodoList = prevState.todoList.map(todo => ({ ...todo }));
       newTodoList.push(newTodo);
       return { todoList: newTodoList };
-    },this.writeLocalStorage);
+    }, this.writeLocalStorage);
   }
 
   updateTodo(newTodo) {
@@ -80,7 +82,14 @@ class App extends Component {
       if (idxfoundTodo === -1) return;
       newTodoList.splice(idxfoundTodo, 1, newTodo);
       return { todoList: newTodoList };
-    },this.writeLocalStorage);
+    }, this.writeLocalStorage);
+  }
+
+  handleCompletedClick() {
+    this.setState(
+      prevState => ({ expandCompleted: !prevState.expandCompleted }),
+      this.writeLocalStorage
+    );
   }
 
   render() {
@@ -92,6 +101,8 @@ class App extends Component {
         </header>
         <TodoList
           todoList={this.state.todoList}
+          expandCompleted={this.state.expandCompleted}
+          onCompletedClick={this.handleCompletedClick}
           onToggleCompleted={this.toggleTodoCompleted}
           onDeleteTodo={this.deleteTodo}
           onUpdateTodo={this.updateTodo}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   List,
   Collapse,
@@ -20,78 +20,65 @@ const styles = {
     width: "100%"
   },
   todoPaper: {
-    margin: "1.5em",
+    margin: "1.5em"
   },
   countAvatar: {
     backgroundColor: "#008000"
   }
 };
 
-class TodoList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      completedExpand: false
-    };
-    this.handleCompletedClick = this.handleCompletedClick.bind(this);
-  }
-
-  handleCompletedClick() {
-    this.setState(prevState => ({
-      completedExpand: !prevState.completedExpand
-    }));
-  }
-
-  render() {
-    const {
-      classes,
-      todoList,
-      onToggleCompleted,
-      onDeleteTodo,
-      onUpdateTodo
-    } = this.props;
-    const nonCompletedTodoList = todoList.filter(todo => !todo.completed);
-    const completedTodoList = todoList.filter(todo => todo.completed);
-    const numCompleted = completedTodoList.length;
-    const listItem = list => {
-      return list.map(todo => {
-        return (
-          <TodoListItem
-            key={todo.id}
-            todo={todo}
-            onToggleCompleted={onToggleCompleted}
-            onDeleteTodo={onDeleteTodo}
-            onUpdateTodo={onUpdateTodo}
-          />
-        );
-      });
-    };
-    return (
-      <div className={classes.listContainer}>
+const TodoList = ({
+  classes,
+  todoList,
+  expandCompleted,
+  onCompletedClick,
+  onToggleCompleted,
+  onDeleteTodo,
+  onUpdateTodo
+}) => {
+  const nonCompletedTodoList = todoList.filter(todo => !todo.completed);
+  const completedTodoList = todoList.filter(todo => todo.completed);
+  const numCompleted = completedTodoList.length;
+  const listItem = list => {
+    return list.map(todo => {
+      return (
+        <TodoListItem
+          key={todo.id}
+          todo={todo}
+          onToggleCompleted={onToggleCompleted}
+          onDeleteTodo={onDeleteTodo}
+          onUpdateTodo={onUpdateTodo}
+        />
+      );
+    });
+  };
+  return (
+    <div className={classes.listContainer}>
+      <Paper elevation={5} className={classes.todoPaper}>
+        <List disablePadding>
+          <ListItem button onClick={onCompletedClick}>
+            <Avatar className={classes.countAvatar}>
+              {numCompleted.toString()}
+            </Avatar>
+            <ListItemText
+              primary="Completed"
+              primaryTypographyProps={{ variant: "headline" }}
+            />
+            {expandCompleted ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={expandCompleted} timeout="auto">
+            <List disablePadding>{listItem(completedTodoList)}</List>
+          </Collapse>
+        </List>
+      </Paper>
+      {nonCompletedTodoList.length > 0 && (
         <Paper elevation={5} className={classes.todoPaper}>
-          <List disablePadding>
-            <ListItem button onClick={this.handleCompletedClick}>
-              <Avatar className={classes.countAvatar}>{numCompleted.toString()}</Avatar>
-              <ListItemText
-                primary="Completed"
-                primaryTypographyProps={{ variant: "headline" }}
-              />
-              {this.state.completedExpand ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.completedExpand} timeout="auto">
-              <List disablePadding>{listItem(completedTodoList)}</List>
-            </Collapse>
-          </List>
+          <List disablePadding>{listItem(nonCompletedTodoList)}</List>
         </Paper>
-        {nonCompletedTodoList.length > 0 && (
-          <Paper elevation={5} className={classes.todoPaper}>
-            <List disablePadding>{listItem(nonCompletedTodoList)}</List>
-          </Paper>
-        )}
-      </div>
-    );
-  }
-}
+      )}
+    </div>
+  );
+};
 
 TodoList.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -104,6 +91,8 @@ TodoList.propTypes = {
       completed: PropTypes.bool
     })
   ).isRequired,
+  expandCompleted: PropTypes.bool.isRequired,
+  onCompletedClick: PropTypes.func.isRequired,
   onToggleCompleted: PropTypes.func,
   onDeleteTodo: PropTypes.func,
   onUpdateTodo: PropTypes.func
