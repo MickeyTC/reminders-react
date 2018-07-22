@@ -47,12 +47,14 @@ class TodoListItem extends Component {
           />
           <ListItemText
             primary={todo.title}
-            primaryTypographyProps={
-              todo.completed ? { color: "textSecondary" } : {}
-            }
+            primaryTypographyProps={{
+              color: todo.completed ? "textSecondary" : "default",
+              noWrap: true
+            }}
             secondary={
               todo.date && moment(todo.date, "YYYY-MM-DD HH:mm Z").fromNow()
             }
+            secondaryTypographyProps={{ noWrap: true }}
           />
           <ListItemSecondaryAction>
             <IconButton color="secondary" onClick={() => onDeleteTodo(todo.id)}>

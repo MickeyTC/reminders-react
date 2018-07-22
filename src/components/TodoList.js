@@ -16,7 +16,6 @@ import TodoListItem from "./TodoListItem";
 const styles = {
   listContainer: {
     maxWidth: "800px",
-    minWidth: "315px",
     width: "100%"
   },
   todoPaper: {
@@ -62,7 +61,7 @@ const TodoList = ({
             </Avatar>
             <ListItemText
               primary="Completed"
-              primaryTypographyProps={{ variant: "headline" }}
+              primaryTypographyProps={{ variant: "headline", noWrap: true }}
             />
             {expandCompleted ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
