@@ -125,82 +125,91 @@ class TodoDetail extends Component {
     const todo = this.state.todo;
     return (
       <Dialog open={open} onClose={() => onCancel()}>
-        {dialogTitle && <DialogTitle>{dialogTitle}</DialogTitle>}
-        <DialogContent>
-          <TextField
-            name="id"
-            label="ID"
-            margin="dense"
-            disabled
-            fullWidth
-            value={todo.id}
-            onChange={this.handleChangeText}
-          />
-          <TextField
-            name="title"
-            label="Title"
-            margin="dense"
-            fullWidth
-            value={todo.title}
-            onChange={this.handleChangeText}
-            autoFocus
-          />
-          <TextField
-            name="description"
-            label="Description"
-            margin="dense"
-            fullWidth
-            multiline
-            rows="3"
-            value={todo.description}
-            onChange={this.handleChangeText}
-          />
-          <div className={classes.dueContainer}>
+        <form
+          onSubmit={event => {
+            onSave(this.state.todo);
+            event.preventDefault();
+          }}
+        >
+          {dialogTitle && <DialogTitle>{dialogTitle}</DialogTitle>}
+          <DialogContent>
             <TextField
-              name="date"
-              type="date"
-              label="Due Date"
-              className={classes.dateInput}
+              name="id"
+              label="ID"
               margin="dense"
-              value={
-                todo.date === ""
-                  ? ""
-                  : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("YYYY-MM-DD")
-              }
-              onChange={this.handleChangeDate}
-              InputLabelProps={{
-                shrink: true
-              }}
+              disabled
+              fullWidth
+              value={todo.id}
+              onChange={this.handleChangeText}
             />
             <TextField
-              name="time"
-              type="time"
-              label="Time"
-              className={classes.timeInput}
+              name="title"
+              label="Title"
               margin="dense"
-              value={
-                todo.date === ""
-                  ? ""
-                  : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("HH:mm")
-              }
-              onChange={this.handleChangeTime}
-              InputLabelProps={{
-                shrink: true
-              }}
+              fullWidth
+              value={todo.title}
+              onChange={this.handleChangeText}
+              autoFocus
             />
-          </div>
-        </DialogContent>
-        <DialogActions className={classes.dialogAction}>
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            onClick={() => onSave(this.state.todo)}
-          >
-            Save
-            <SaveIcon className={classes.rightIcon} />
-          </Button>
-        </DialogActions>
+            <TextField
+              name="description"
+              label="Description"
+              margin="dense"
+              fullWidth
+              multiline
+              rows="3"
+              value={todo.description}
+              onChange={this.handleChangeText}
+            />
+            <div className={classes.dueContainer}>
+              <TextField
+                name="date"
+                type="date"
+                label="Due Date"
+                className={classes.dateInput}
+                margin="dense"
+                value={
+                  todo.date === ""
+                    ? ""
+                    : moment(todo.date, "YYYY-MM-DD HH:mm Z").format(
+                        "YYYY-MM-DD"
+                      )
+                }
+                onChange={this.handleChangeDate}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+              <TextField
+                name="time"
+                type="time"
+                label="Time"
+                className={classes.timeInput}
+                margin="dense"
+                value={
+                  todo.date === ""
+                    ? ""
+                    : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("HH:mm")
+                }
+                onChange={this.handleChangeTime}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </div>
+          </DialogContent>
+          <DialogActions className={classes.dialogAction}>
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              type="submit"
+            >
+              Save
+              <SaveIcon className={classes.rightIcon} />
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     );
   }
