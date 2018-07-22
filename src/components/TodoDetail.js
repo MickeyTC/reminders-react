@@ -35,15 +35,33 @@ class TodoDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todo: { ...props.todo }
+      id: "",
+      title: "",
+      description: "",
+      shortDate: "",
+      shortTime: ""
     };
     this.handleChangeText = this.handleChangeText.bind(this);
-    this.handleChangeDate = this.handleChangeDate.bind(this);
-    this.handleChangeTime = this.handleChangeTime.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({ todo: { ...newProps.todo } });
+    const todo = newProps.todo;
+    this.setState({
+      id: todo.id,
+      title: todo.title,
+      description: todo.description,
+      shortDate:
+        newProps.todo.date === ""
+          ? ""
+          : moment(newProps.todo.date, "YYYY-MM-DD HH:mm Z").format(
+              "YYYY-MM-DD"
+            ),
+      shortTime:
+        newProps.todo.date === ""
+          ? ""
+          : moment(newProps.todo.date, "YYYY-MM-DD HH:mm Z").format("HH:mm")
+    });
   }
 
   handleChangeText(event) {
@@ -52,85 +70,52 @@ class TodoDetail extends Component {
     const name = event.target.name;
     // console.log(name, value);
     this.setState(prevState => {
-      return {
-        todo: {
-          ...prevState.todo,
-          [name]: value
-        }
-      };
-    });
-  }
-
-  handleChangeDate(event) {
-    const target = event.target;
-    const value = target.value;
-    // console.log("Date", value, value.length);
-    if (value === "") {
-      this.setState(prevState => ({
-        todo: {
-          ...prevState.todo,
-          date: ""
-        }
-      }));
-    } else {
-      this.setState(prevState => {
-        const newMoment = moment(value, "YYYY-MM-DD");
-        if (prevState.todo.date !== "") {
-          const prevMoment = moment(prevState.todo.date, "YYYY-MM-DD HH:mm Z");
-          newMoment.set({
-            hour: prevMoment.hour(),
-            minute: prevMoment.minute()
-          });
-        }
-        // console.log(newMoment.toString());
+      if (name === "shortDate" && prevState.shortTime === "" && value !== "") {
         return {
-          todo: {
-            ...prevState.todo,
-            date: newMoment.format("YYYY-MM-DD HH:mm Z")
-          }
+          ...prevState,
+          shortDate: value,
+          shortTime: "00:00"
         };
-      });
-    }
-  }
-
-  handleChangeTime(event) {
-    const target = event.target;
-    const value = target.value;
-    // console.log("Time", value, value.length);
-    this.setState(prevState => {
-      const newMoment = value
-        ? moment(value, "HH:mm")
-        : moment("00:00", "HH:mm");
-      if (prevState.todo.date !== "") {
-        const prevMoment = moment(prevState.todo.date, "YYYY-MM-DD HH:mm Z");
-        newMoment.set({
-          year: prevMoment.year(),
-          month: prevMoment.month(),
-          date: prevMoment.date()
-        });
       }
-      // console.log(newMoment.toString());
-      if (!newMoment.isValid()) return;
+      if (name === "shortTime" && prevState.shortDate === "" && value !== "") {
+        return {
+          ...prevState,
+          shortDate: moment().format("YYYY-MM-DD"),
+          shortTime: value
+        };
+      }
       return {
-        todo: {
-          ...prevState.todo,
-          date: newMoment.format("YYYY-MM-DD HH:mm Z")
-        }
+        ...prevState,
+        [name]: value
       };
     });
+  }
+
+  handleSubmit(event) {
+    const newTodo = {
+      id: this.state.id,
+      title: this.state.title,
+      description: this.state.description,
+      completed: this.props.todo.completed
+    };
+    let newMoment = null;
+    if (this.state.shortDate !== "" && this.state.shortTime === "") {
+      newMoment = moment(this.state.shortDate, "YYYY-MM-DD");
+    } else if (this.state.shortDate === "" && this.state.shortTime !== "") {
+      newMoment = moment(this.state.shortTime, "HH:mm");
+    } else if (this.state.shortDate !== "" && this.state.shortTime !== "") {
+      newMoment = moment(`${this.state.shortDate} ${this.state.shortTime}`, "YYYY-MM-DD HH:mm");
+    }
+    newTodo.date = newMoment !== null ? newMoment.format("YYYY-MM-DD HH:mm Z") : "";
+    this.props.onSave(newTodo);
+    event.preventDefault();
   }
 
   render() {
-    const { classes, open, dialogTitle, onCancel, onSave } = this.props;
-    const todo = this.state.todo;
+    const { classes, open, dialogTitle, onCancel } = this.props;
     return (
       <Dialog open={open} onClose={() => onCancel()}>
-        <form
-          onSubmit={event => {
-            onSave(this.state.todo);
-            event.preventDefault();
-          }}
-        >
+        <form onSubmit={this.handleSubmit}>
           {dialogTitle && <DialogTitle>{dialogTitle}</DialogTitle>}
           <DialogContent>
             <TextField
@@ -139,7 +124,7 @@ class TodoDetail extends Component {
               margin="dense"
               disabled
               fullWidth
-              value={todo.id}
+              value={this.state.id}
               onChange={this.handleChangeText}
             />
             <TextField
@@ -147,7 +132,7 @@ class TodoDetail extends Component {
               label="Title"
               margin="dense"
               fullWidth
-              value={todo.title}
+              value={this.state.title}
               onChange={this.handleChangeText}
               autoFocus
             />
@@ -158,40 +143,30 @@ class TodoDetail extends Component {
               fullWidth
               multiline
               rows="3"
-              value={todo.description}
+              value={this.state.description}
               onChange={this.handleChangeText}
             />
             <div className={classes.dueContainer}>
               <TextField
-                name="date"
+                name="shortDate"
                 type="date"
                 label="Due Date"
                 className={classes.dateInput}
                 margin="dense"
-                value={
-                  todo.date === ""
-                    ? ""
-                    : moment(todo.date, "YYYY-MM-DD HH:mm Z").format(
-                        "YYYY-MM-DD"
-                      )
-                }
-                onChange={this.handleChangeDate}
+                value={this.state.shortDate}
+                onChange={this.handleChangeText}
                 InputLabelProps={{
                   shrink: true
                 }}
               />
               <TextField
-                name="time"
+                name="shortTime"
                 type="time"
                 label="Time"
                 className={classes.timeInput}
                 margin="dense"
-                value={
-                  todo.date === ""
-                    ? ""
-                    : moment(todo.date, "YYYY-MM-DD HH:mm Z").format("HH:mm")
-                }
-                onChange={this.handleChangeTime}
+                value={this.state.shortTime}
+                onChange={this.handleChangeText}
                 InputLabelProps={{
                   shrink: true
                 }}
