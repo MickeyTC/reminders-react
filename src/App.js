@@ -36,11 +36,11 @@ class App extends Component {
 
   componentDidMount() {
     this.readLocalStorage();
-    window.addEventListener("beforeunload", this.writeLocalStorage);
+    // window.addEventListener("beforeunload", this.writeLocalStorage);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.writeLocalStorage);
+    // window.removeEventListener("beforeunload", this.writeLocalStorage);
     this.writeLocalStorage();
   }
 
@@ -51,7 +51,7 @@ class App extends Component {
       if (foundTodo === undefined) return;
       foundTodo.completed = !foundTodo.completed;
       return { todoList: newTodoList };
-    });
+    },this.writeLocalStorage);
   }
 
   deleteTodo(id) {
@@ -60,7 +60,7 @@ class App extends Component {
         .map(todo => ({ ...todo }))
         .filter(todo => todo.id !== id);
       return { todoList: newTodoList };
-    });
+    },this.writeLocalStorage);
   }
 
   addTodo(newTodo) {
@@ -68,7 +68,7 @@ class App extends Component {
       const newTodoList = prevState.todoList.map(todo => ({ ...todo }));
       newTodoList.push(newTodo);
       return { todoList: newTodoList };
-    });
+    },this.writeLocalStorage);
   }
 
   updateTodo(newTodo) {
@@ -80,7 +80,7 @@ class App extends Component {
       if (idxfoundTodo === -1) return;
       newTodoList.splice(idxfoundTodo, 1, newTodo);
       return { todoList: newTodoList };
-    });
+    },this.writeLocalStorage);
   }
 
   render() {
