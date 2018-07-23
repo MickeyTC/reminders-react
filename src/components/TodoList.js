@@ -35,8 +35,12 @@ const TodoList = ({
   onDeleteTodo,
   onUpdateTodo
 }) => {
-  const nonCompletedTodoList = todoList.filter(todo => !todo.completed);
-  const completedTodoList = todoList.filter(todo => todo.completed);
+  const nonCompletedTodoList = todoList
+    ? todoList.filter(todo => !todo.completed)
+    : [];
+  const completedTodoList = todoList
+    ? todoList.filter(todo => todo.completed)
+    : [];
   const numCompleted = completedTodoList.length;
   const listItem = list => {
     return list.map(todo => {
@@ -89,7 +93,7 @@ TodoList.propTypes = {
       date: PropTypes.string,
       completed: PropTypes.bool
     })
-  ).isRequired,
+  ),
   expandCompleted: PropTypes.bool.isRequired,
   onCompletedClick: PropTypes.func.isRequired,
   onToggleCompleted: PropTypes.func,
