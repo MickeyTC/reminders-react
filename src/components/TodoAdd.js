@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
 import TodoDetail from "./TodoDetail";
 import uniqid from "uniqid";
+import { addTodo } from "../actions/todoList";
 
 class TodoAdd extends Component {
   constructor(props) {
@@ -67,4 +69,13 @@ TodoAdd.propTypes = {
   onAddTodo: PropTypes.func
 };
 
-export default TodoAdd;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddTodo: todo => dispatch(addTodo(todo))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(TodoAdd);

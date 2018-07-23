@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
   List,
   Collapse,
@@ -12,6 +13,12 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import PropTypes from "prop-types";
 import TodoListItem from "./TodoListItem";
+import {
+  updateTodo,
+  deleteTodo,
+  toggleTodoCompleted
+} from "../actions/todoList";
+import { toggleExpandCompleted } from "../actions/expandCompleted";
 
 const styles = {
   listContainer: {
@@ -101,4 +108,23 @@ TodoList.propTypes = {
   onUpdateTodo: PropTypes.func
 };
 
-export default withStyles(styles)(TodoList);
+const mapStateToProps = state => {
+  return {
+    todoList: state.todoList,
+    expandCompleted: state.expandCompleted
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onCompletedClick: () => dispatch(toggleExpandCompleted()),
+    onToggleCompleted: id => dispatch(toggleTodoCompleted(id)),
+    onDeleteTodo: id => dispatch(deleteTodo(id)),
+    onUpdateTodo: todo => dispatch(updateTodo(todo))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(TodoList));

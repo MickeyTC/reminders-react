@@ -6,7 +6,7 @@ import {
 } from "../constants/actionTypes";
 import initialState from "./initialState";
 
-const todos = (state = initialState.todoList, action) => {
+const todoList = (state = initialState.todoList, action) => {
   const newTodoList = state.map(todo => ({ ...todo }));
   switch (action.type) {
     case ADD_TODO:
@@ -30,4 +30,4 @@ const todos = (state = initialState.todoList, action) => {
   }
 };
 
-export default todos;
+export default todoList;
