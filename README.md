@@ -11,23 +11,10 @@ Reminders web application created by React
 
 ### Installing
 
-1. Install the dependencies
-```sh
-npm install
-```
-or use [yarn](https://yarnpkg.com/lang/en/)
-```sh
-yarn install
-```
-2. Run the code
-```sh
-npm run start
-```
-or use [yarn](https://yarnpkg.com/lang/en/)
-```sh
-yarn run start
-```
-3. Open http://localhost:3000/ in the browser
+1. Open the Command Prompt and change directory to this
+2. Install the dependencies by typing `npm install` or `yarn install`
+3. Run the code by typing `npm run start` or `yarn run start`
+4. Open http://localhost:3000/ in the browser
 
 ## Built With
 
@@ -41,4 +28,4 @@ yarn run start
 
 ## Demo
 
-https://mickeytc.github.io/reminders-react/
+* https://mickeytc.github.io/reminders-react/
