@@ -108,6 +108,9 @@ const styles = {
   },
   countAvatar: {
     backgroundColor: '#008000',
+    marginRight: '1em',
+    marginTop: '0.5em',
+    marginBottom: '0.5em',
   },
 }
 
