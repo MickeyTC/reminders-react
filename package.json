@@ -4,16 +4,16 @@
   "private": true,
   "homepage": "https://mickeytc.github.io/reminders-react/",
   "dependencies": {
-    "@material-ui/core": "^1.4.0",
-    "@material-ui/icons": "^1.1.0",
-    "moment": "^2.22.2",
-    "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
+    "@material-ui/core": "^1.5.1",
+    "@material-ui/icons": "^1.1.1",
+    "moment": "^2.27.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^5.1.2",
+    "redux": "^4.0.5",
     "redux-persist": "^5.10.0",
-    "uniqid": "^5.0.3"
+    "uniqid": "^5.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,6 +24,6 @@
   },
   "devDependencies": {
     "gh-pages": "^1.2.0",
-    "react-scripts": "^1.1.4"
+    "react-scripts": "^1.1.5"
   }
 }
