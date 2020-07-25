@@ -71,6 +71,11 @@ class TodoList extends Component {
     }
     return (
       <div className={classes.listContainer}>
+        {nonCompletedTodoList.length > 0 && (
+          <Paper elevation={5} className={classes.todoPaper}>
+            <List disablePadding>{listItem(nonCompletedTodoList)}</List>
+          </Paper>
+        )}
         <Paper elevation={5} className={classes.todoPaper}>
           <List disablePadding>
             <ListItem button onClick={onCompletedClick}>
@@ -88,11 +93,6 @@ class TodoList extends Component {
             </Collapse>
           </List>
         </Paper>
-        {nonCompletedTodoList.length > 0 && (
-          <Paper elevation={5} className={classes.todoPaper}>
-            <List disablePadding>{listItem(nonCompletedTodoList)}</List>
-          </Paper>
-        )}
       </div>
     )
   }
